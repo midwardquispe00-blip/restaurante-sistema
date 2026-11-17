@@ -8,7 +8,7 @@ class Pedido {
         $this->conn = $db;
     }
 
-    public function crearPedido($mesa, $cliente, $metodo_pago, $items) {
+    public function crearPedido($mesa, $cliente, $metodo_pago, $comprobante, $items) {
         try {
             $this->conn->beginTransaction();
 
@@ -17,13 +17,14 @@ class Pedido {
                 $total += $item['cantidad'] * $item['precio'];
             }
 
-            $sqlPedido = "INSERT INTO pedido (mesa, cliente, metodo_pago, total, estado) 
-                          VALUES (:mesa, :cliente, :metodo_pago, :total, 'Atendido')";
+            $sqlPedido = "INSERT INTO pedido (mesa, cliente, metodo_pago, comprobante, total, estado) 
+                          VALUES (:mesa, :cliente, :metodo_pago, :comprobante, :total, 'Verificado')";
             $stmt = $this->conn->prepare($sqlPedido);
             $stmt->execute([
                 ':mesa'        => $mesa,
                 ':cliente'     => $cliente,
                 ':metodo_pago' => $metodo_pago,
+                ':comprobante' => $comprobante,
                 ':total'       => $total
             ]);
             $idpedido = $this->conn->lastInsertId();
@@ -32,7 +33,7 @@ class Pedido {
                            VALUES (:idpedido, :idplato, :cantidad, :precio)";
             $stmtDet = $this->conn->prepare($sqlDetalle);
 
-            $sqlStock = "UPDATE plato SET stock = stock - :cantidad WHERE idplato = :idplato";
+            $sqlStock = "UPDATE plato SET stock = GREATEST(0, stock - :cantidad) WHERE idplato = :idplato";
             $stmtStock = $this->conn->prepare($sqlStock);
 
             foreach ($items as $item) {
@@ -58,7 +59,7 @@ class Pedido {
     }
 
     public function listarPedidos() {
-        $query = "SELECT p.idpedido, p.mesa, p.cliente, p.metodo_pago, p.total, p.estado, p.fecha,
+        $query = "SELECT p.idpedido, p.mesa, p.cliente, p.metodo_pago, p.comprobante, p.total, p.estado, p.fecha,
                          COUNT(d.iddetalle) AS cantidad_items
                   FROM pedido p
                   LEFT JOIN detalle_pedido d ON p.idpedido = d.idpedido
