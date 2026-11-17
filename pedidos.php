@@ -29,7 +29,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
         header h1 { margin: 0; font-size: 22px; display: flex; align-items: center; gap: 10px; }
-        header .version-tag { background: var(--primary); font-size: 12px; padding: 4px 10px; border-radius: 20px; font-weight: bold; }
+        header .version-tag { background: #00b894; font-size: 12px; padding: 4px 10px; border-radius: 20px; font-weight: bold; }
         nav a { color: #dcdde1; text-decoration: none; margin-left: 20px; font-weight: 600; padding: 8px 14px; border-radius: 6px; transition: 0.2s; }
         nav a.active, nav a:hover { background: var(--primary); color: #fff; }
 
@@ -115,10 +115,11 @@
 <body>
 
 <header>
-    <h1>🍽️ RestoVentas <span class="version-tag">v3.0</span></h1>
+    <h1>🍽️ RestoVentas <span class="version-tag">v5.0 FINAL</span></h1>
     <nav>
         <a href="index.php">Gestión de Carta</a>
         <a href="pedidos.php" class="active">Pedidos en Salón</a>
+        <a href="reportes.php">Reportes y Caja</a>
     </nav>
 </header>
 
