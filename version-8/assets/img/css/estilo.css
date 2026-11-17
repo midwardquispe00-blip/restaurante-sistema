@@ -1,0 +1,298 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    --wood-dark: #1a110b;
+    --wood-card: #261911;
+    --gold: #d4af37;
+    --gold-light: #f3d06b;
+    --crimson: #9e1b1b;
+    --crimson-hover: #7a1212;
+    --cream-bg: #faf6f0;
+    --white: #ffffff;
+    --text-dark: #2c1e16;
+    --text-muted: #6e5d53;
+    --border-gold: rgba(212, 175, 55, 0.35);
+}
+
+* { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+body { margin: 0; background-color: var(--cream-bg); color: var(--text-dark); }
+
+/* Header Gourmet Madera y Oro */
+header {
+    background: linear-gradient(135deg, #140c08 0%, #2a1810 100%);
+    color: var(--white);
+    padding: 12px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--gold);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand { display: flex; align-items: center; gap: 15px; text-decoration: none; color: inherit; }
+.brand img {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    object-fit: cover;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.45);
+}
+.brand-text h1 {
+    font-family: 'Playfair Display', serif;
+    margin: 0;
+    font-size: 24px;
+    color: var(--gold-light);
+    letter-spacing: 0.5px;
+}
+.brand-text span {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #e0d3c8;
+    display: block;
+}
+
+nav { display: flex; gap: 10px; flex-wrap: wrap; }
+nav a {
+    color: #f0e6dd;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 30px;
+    border: 1px solid transparent;
+    transition: all 0.25s ease;
+}
+nav a:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+}
+nav a.active {
+    background: linear-gradient(135deg, var(--crimson) 0%, #c0392b 100%);
+    color: var(--white);
+    border-color: var(--gold);
+    box-shadow: 0 4px 12px rgba(158, 27, 27, 0.4);
+}
+
+/* Banner Hero Gastronómico */
+.hero-banner {
+    background: linear-gradient(rgba(20, 12, 8, 0.78), rgba(20, 12, 8, 0.85)),
+                url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1400&q=80') center/cover;
+    color: var(--white);
+    padding: 36px 20px;
+    text-align: center;
+    border-bottom: 2px solid var(--gold);
+}
+.hero-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    margin: 0 0 8px 0;
+    color: var(--gold-light);
+}
+.hero-banner p { margin: 0; color: #e8dcd2; font-size: 15px; }
+
+/* Contenedor */
+.container { max-width: 1240px; margin: 30px auto; padding: 0 24px; }
+
+/* Tarjetas de Formulario y Contenedores */
+.card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 26px;
+    box-shadow: 0 8px 25px rgba(44, 30, 22, 0.07);
+    margin-bottom: 28px;
+    border: 1px solid var(--border-gold);
+}
+.card-title {
+    font-family: 'Playfair Display', serif;
+    margin: 0 0 18px 0;
+    font-size: 21px;
+    color: var(--wood-dark);
+    border-bottom: 2px solid #f3ece4;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 16px;
+}
+.form-group { display: flex; flex-direction: column; }
+.form-group label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--wood-dark); }
+input, select {
+    padding: 11px 14px;
+    border: 1px solid #d7ccc2;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fffdf9;
+    transition: 0.2s;
+}
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+}
+
+.btn-gold {
+    background: linear-gradient(135deg, #c59b27 0%, #e0b94b 100%);
+    color: #1a110b;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 800;
+    cursor: pointer;
+    font-size: 14px;
+    transition: transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(197, 155, 39, 0.35);
+}
+.btn-gold:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(197, 155, 39, 0.5); }
+
+.btn-crimson {
+    background: linear-gradient(135deg, var(--crimson) 0%, #c0392b 100%);
+    color: var(--white);
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+.btn-crimson:hover { background: var(--crimson-hover); }
+
+/* Galería Estilo Michelin / Gourmet Grid */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.dish-card {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+.dish-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(44, 30, 22, 0.16);
+}
+
+.dish-img-wrap {
+    position: relative;
+    height: 195px;
+    width: 100%;
+    overflow: hidden;
+    background: #2a1810;
+}
+.dish-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+.dish-card:hover .dish-img-wrap img { transform: scale(1.06); }
+
+.dish-badge-cat {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(20, 12, 8, 0.85);
+    color: var(--gold-light);
+    border: 1px solid var(--gold);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.dish-price-tag {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: var(--crimson);
+    color: var(--white);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.dish-body { padding: 18px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.dish-code { font-size: 11px; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; }
+.dish-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    margin: 4px 0 8px 0;
+    color: var(--wood-dark);
+}
+.dish-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0 0 14px 0; }
+.dish-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #f0e8df;
+}
+.stock-pill { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 12px; background: #e8f5e9; color: #2e7d32; }
+.stock-pill.low { background: #ffebee; color: #c62828; }
+
+.btn-card-edit {
+    background: var(--wood-dark);
+    color: var(--gold-light);
+    border: 1px solid var(--gold);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.btn-card-edit:hover { background: var(--gold); color: var(--wood-dark); }
+
+/* Tablas elegantes */
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 13px 12px; text-align: left; border-bottom: 1px solid #efe7de; font-size: 14px; }
+th { background: #261911; color: var(--gold-light); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+tr:hover { background-color: #fdfaf5; }
+
+/* Alertas y Modales */
+.alerta {
+    display: none;
+    padding: 14px 18px;
+    background: #1e4620;
+    color: #fff;
+    border-left: 5px solid var(--gold);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 9, 5, 0.72);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: var(--white);
+    padding: 28px;
+    border-radius: 14px;
+    width: 480px;
+    max-width: 92%;
+    border: 2px solid var(--gold);
+}

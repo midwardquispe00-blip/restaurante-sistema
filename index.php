@@ -3,31 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Rincón del Sabor | E-Commerce Gourmet v7.0</title>
+    <title>El Rincón del Sabor | Pedidos Online &amp; Gestión v7.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* ==========================================================================
-           VARIABLES DE TEMA (MODO OSCURO GOURMET / MODO CLARO CÁLIDO)
-           ========================================================================== */
         :root[data-theme="dark"] {
             --bg-body: #0f0a07;
             --bg-surface: #1b120c;
             --bg-card: #22160f;
-            --bg-glass: rgba(27, 18, 12, 0.82);
+            --bg-glass: rgba(27, 18, 12, 0.86);
             --text-primary: #fdf8f2;
             --text-secondary: #c2b2a3;
-            --border-color: rgba(212, 175, 55, 0.25);
+            --border-color: rgba(212, 175, 55, 0.28);
             --input-bg: #140c08;
-            --shadow-card: 0 14px 34px rgba(0, 0, 0, 0.45);
+            --shadow-card: 0 14px 34px rgba(0, 0, 0, 0.48);
         }
         :root[data-theme="light"] {
             --bg-body: #faf6f0;
             --bg-surface: #ffffff;
             --bg-card: #ffffff;
-            --bg-glass: rgba(255, 255, 255, 0.88);
+            --bg-glass: rgba(255, 255, 255, 0.90);
             --text-primary: #24150d;
             --text-secondary: #6e5a4f;
-            --border-color: rgba(212, 175, 55, 0.4);
+            --border-color: rgba(212, 175, 55, 0.42);
             --input-bg: #fcf9f5;
             --shadow-card: 0 12px 30px rgba(36, 21, 13, 0.08);
         }
@@ -38,94 +35,111 @@
             --crimson-light: #ef4444;
             --emerald: #10b981;
             --yape: #742284;
-            --plin: #00b4d8;
+            --yape-dark: #4a1259;
             --wsp: #25D366;
             --radius-xl: 18px;
-            --radius-md: 12px;
         }
 
-        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.25s ease, color 0.2s ease, border-color 0.2s ease; }
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.2s ease, color 0.2s ease; }
         body { margin: 0; background-color: var(--bg-body); color: var(--text-primary); overflow-x: hidden; }
 
-        /* ==========================================================================
-           NAVBAR GLASSMORPHISM
-           ========================================================================== */
+        /* Visibilidad según Rol (Cliente vs Personal Autenticado) */
+        body[data-role="cliente"] .staff-only { display: none !important; }
+        body[data-role="staff"] .client-only-login { display: none !important; }
+
+        /* NAVBAR GLASSMORPHISM */
         header {
             position: sticky; top: 0; z-index: 1000;
             background: var(--bg-glass);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1.5px solid var(--border-color);
-            padding: 12px 36px;
-            display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+            padding: 12px 34px;
+            display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
         }
         .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
         .brand-logo {
-            width: 60px !important; height: 60px !important;
+            width: 58px !important; height: 58px !important;
             border-radius: 50%; border: 2px solid var(--gold);
-            object-fit: cover; box-shadow: 0 0 18px rgba(212, 175, 55, 0.45);
+            object-fit: cover; box-shadow: 0 0 16px rgba(212, 175, 55, 0.45);
         }
         .brand-title h1 {
-            font-family: 'Playfair Display', serif; font-size: 24px; margin: 0;
+            font-family: 'Playfair Display', serif; font-size: 23px; margin: 0;
             background: linear-gradient(90deg, var(--gold-light), var(--gold));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .brand-title span { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-secondary); display: block; }
-        .badge-v7 {
-            background: linear-gradient(135deg, var(--crimson), #991b1b);
-            color: #fff; font-size: 11px; font-weight: 800; padding: 3px 10px;
-            border-radius: 20px; border: 1px solid var(--gold); margin-left: 6px;
-            -webkit-text-fill-color: #fff;
+        .brand-title span { font-size: 11px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--text-secondary); display: block; }
+
+        /* Selector de Modo Cliente / Personal */
+        .role-switcher {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--input-bg); padding: 5px; border-radius: 40px;
+            border: 1px solid var(--border-color);
+        }
+        .role-tab {
+            padding: 8px 16px; border-radius: 30px; border: none;
+            font-weight: 700; font-size: 13px; cursor: pointer;
+            background: transparent; color: var(--text-secondary);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .role-tab.active {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: #140c07; font-weight: 800; box-shadow: 0 4px 12px rgba(212,175,55,0.3);
+        }
+        .role-tab.staff-active {
+            background: linear-gradient(135deg, var(--crimson), #dc2626);
+            color: #fff; font-weight: 800;
         }
 
-        .nav-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .nav-actions { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
         .nav-link {
-            color: var(--text-primary); text-decoration: none; font-weight: 600; font-size: 13.5px;
-            padding: 9px 16px; border-radius: 30px; border: 1px solid var(--border-color);
-            background: rgba(212, 175, 55, 0.06); cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+            color: var(--text-primary); text-decoration: none; font-weight: 600; font-size: 13px;
+            padding: 9px 15px; border-radius: 30px; border: 1px solid var(--border-color);
+            background: rgba(212, 175, 55, 0.06); cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
         }
         .nav-link:hover, .nav-link.active {
-            border-color: var(--gold); background: linear-gradient(135deg, rgba(212,175,55,0.22), rgba(185,28,28,0.25));
+            border-color: var(--gold); background: rgba(212, 175, 55, 0.2);
         }
 
         .btn-cart-trigger {
             background: linear-gradient(135deg, var(--gold), var(--gold-light));
-            color: #140c07; font-weight: 800; border: none; padding: 10px 20px;
+            color: #140c07; font-weight: 800; border: none; padding: 10px 18px;
             border-radius: 30px; cursor: pointer; display: flex; align-items: center; gap: 8px;
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35); font-size: 14px;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35); font-size: 13.5px;
         }
-        .btn-cart-trigger:hover { transform: translateY(-2px); }
         .cart-counter {
             background: var(--crimson); color: #fff; font-size: 12px; font-weight: 800;
             padding: 2px 8px; border-radius: 20px;
         }
 
-        /* ==========================================================================
-           HERO BANNER
-           ========================================================================== */
+        /* Franja Superior de Estado de Sesión Staff */
+        .staff-bar {
+            background: linear-gradient(90deg, #7f1d1d, #24150d, #7f1d1d);
+            color: #fff; padding: 9px 34px; font-size: 13px;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+            border-bottom: 1px solid var(--gold);
+        }
+
+        /* HERO BANNER */
         .hero {
             background: linear-gradient(rgba(15, 10, 7, 0.72), rgba(15, 10, 7, 0.9)),
                         url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1500&q=80') center/cover;
-            padding: 42px 24px; text-align: center; border-bottom: 1.5px solid var(--border-color);
+            padding: 38px 24px; text-align: center; border-bottom: 1.5px solid var(--border-color);
         }
-        .hero h2 { font-family: 'Playfair Display', serif; font-size: 36px; margin: 0 0 10px; color: var(--gold-light); }
-        .hero p { max-width: 680px; margin: 0 auto 18px; color: #e5d8c8; font-size: 15px; }
-        .hero-badges { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .hero h2 { font-family: 'Playfair Display', serif; font-size: 34px; margin: 0 0 8px; color: var(--gold-light); }
+        .hero p { max-width: 660px; margin: 0 auto 16px; color: #e5d8c8; font-size: 14.5px; }
+        .hero-badges { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
         .hero-pill {
             background: rgba(255,255,255,0.1); backdrop-filter: blur(8px);
             border: 1px solid rgba(212, 175, 55, 0.4); color: #fff;
-            padding: 6px 14px; border-radius: 30px; font-size: 12.5px; font-weight: 600;
+            padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 600;
         }
 
-        /* ==========================================================================
-           CONTENEDOR Y BARRA DE HERRAMIENTAS
-           ========================================================================== */
-        .container { max-width: 1320px; margin: 28px auto; padding: 0 24px; }
+        .container { max-width: 1320px; margin: 26px auto; padding: 0 24px; }
 
         .toolbar {
             background: var(--bg-surface); border: 1px solid var(--border-color);
-            border-radius: var(--radius-xl); padding: 18px 22px; margin-bottom: 28px;
-            display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+            border-radius: var(--radius-xl); padding: 16px 22px; margin-bottom: 26px;
+            display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
             box-shadow: var(--shadow-card);
         }
         .search-box { flex: 1; min-width: 240px; position: relative; }
@@ -150,52 +164,38 @@
 
         .btn-primary-gradient {
             background: linear-gradient(135deg, var(--crimson), #dc2626);
-            color: #fff; border: 1px solid var(--gold); padding: 11px 20px;
-            border-radius: 30px; font-weight: 800; font-size: 13.5px; cursor: pointer;
-            box-shadow: 0 6px 18px rgba(185, 28, 28, 0.35);
+            color: #fff; border: 1px solid var(--gold); padding: 10px 18px;
+            border-radius: 30px; font-weight: 800; font-size: 13px; cursor: pointer;
         }
-        .btn-primary-gradient:hover { transform: translateY(-2px); }
 
-        /* ==========================================================================
-           GRID DE PRODUCTOS CON MICRO-INTERACCIONES
-           ========================================================================== */
-        .catalog-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(285px, 1fr)); gap: 24px;
-        }
+        /* TARJETAS DE PRODUCTOS */
+        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
         .product-card {
             background: var(--bg-card); border-radius: var(--radius-xl);
             border: 1px solid var(--border-color); overflow: hidden;
             box-shadow: var(--shadow-card); display: flex; flex-direction: column;
-            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+            transition: transform 0.28s ease, box-shadow 0.28s ease;
         }
         .product-card:hover {
-            transform: translateY(-7px);
-            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.16);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 38px rgba(212, 175, 55, 0.16);
             border-color: var(--gold);
         }
-        .card-img-wrap {
-            position: relative; height: 210px; width: 100%; overflow: hidden; background: #160d08;
-        }
-        .card-img-wrap img {
-            width: 100% !important; height: 210px !important; object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        .product-card:hover .card-img-wrap img { transform: scale(1.08); }
+        .card-img-wrap { position: relative; height: 210px; width: 100%; overflow: hidden; background: #160d08; }
+        .card-img-wrap img { width: 100% !important; height: 210px !important; object-fit: cover; transition: transform 0.45s ease; }
+        .product-card:hover .card-img-wrap img { transform: scale(1.07); }
 
         .card-cat-pill {
             position: absolute; top: 12px; left: 12px;
-            background: rgba(15, 10, 7, 0.82); backdrop-filter: blur(6px);
+            background: rgba(15, 10, 7, 0.84); backdrop-filter: blur(6px);
             color: var(--gold-light); border: 1px solid var(--gold);
             padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase;
         }
-        .card-admin-btns {
-            position: absolute; top: 12px; right: 12px; display: flex; gap: 6px;
-        }
+        .card-admin-btns { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; }
         .icon-btn {
-            width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.25);
-            background: rgba(15, 10, 7, 0.8); color: #fff; cursor: pointer;
+            width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(15, 10, 7, 0.82); color: #fff; cursor: pointer;
             display: flex; align-items: center; justify-content: center; font-size: 14px;
-            backdrop-filter: blur(4px);
         }
         .icon-btn:hover { background: var(--gold); color: #140c07; }
         .icon-btn.del:hover { background: var(--crimson-light); color: #fff; }
@@ -205,7 +205,6 @@
             background: linear-gradient(135deg, var(--crimson), #991b1b);
             color: #fff; padding: 6px 14px; border-radius: 10px;
             font-weight: 800; font-size: 16px; border: 1px solid rgba(255,255,255,0.25);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
 
         .card-body { padding: 18px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
@@ -228,28 +227,21 @@
             color: #140c07; border: none; padding: 10px 14px; border-radius: 10px;
             font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
         }
-        .btn-add-cart:hover { filter: brightness(1.06); transform: scale(1.02); }
 
-        /* ==========================================================================
-           DRAWER LATERAL DEL CARRITO
-           ========================================================================== */
+        /* DRAWER DEL CARRITO */
         .drawer-overlay {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(4px); z-index: 2000; display: none; opacity: 0; transition: opacity 0.25s ease;
+            backdrop-filter: blur(4px); z-index: 2000; display: none;
         }
-        .drawer-overlay.open { display: block; opacity: 1; }
-
+        .drawer-overlay.open { display: block; }
         .cart-drawer {
             position: fixed; top: 0; right: -430px; width: 410px; max-width: 92vw; height: 100vh;
             background: var(--bg-surface); border-left: 2px solid var(--gold);
             z-index: 2001; display: flex; flex-direction: column;
-            box-shadow: -10px 0 35px rgba(0,0,0,0.5); transition: right 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: -10px 0 35px rgba(0,0,0,0.5); transition: right 0.3s ease;
         }
         .cart-drawer.open { right: 0; }
-        .drawer-header {
-            padding: 20px 22px; border-bottom: 1px solid var(--border-color);
-            display: flex; justify-content: space-between; align-items: center;
-        }
+        .drawer-header { padding: 20px 22px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
         .drawer-header h3 { margin: 0; font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold); }
         .drawer-body { flex: 1; overflow-y: auto; padding: 18px 22px; }
         .cart-item {
@@ -257,7 +249,7 @@
             background: var(--bg-card); border: 1px solid var(--border-color);
             border-radius: 12px; margin-bottom: 12px;
         }
-        .cart-item img { width: 58px; height: 58px; border-radius: 10px; object-fit: cover; border: 1px solid var(--gold); }
+        .cart-item img { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; border: 1px solid var(--gold); }
         .cart-item-info { flex: 1; }
         .cart-item-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
         .cart-item-price { color: var(--gold); font-weight: 800; font-size: 13px; }
@@ -266,11 +258,7 @@
             width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border-color);
             background: var(--input-bg); color: var(--text-primary); font-weight: 800; cursor: pointer;
         }
-        .qty-btn:hover { background: var(--gold); color: #140c07; }
-
-        .drawer-footer {
-            padding: 20px 22px; border-top: 1px solid var(--border-color); background: var(--bg-card);
-        }
+        .drawer-footer { padding: 20px 22px; border-top: 1px solid var(--border-color); background: var(--bg-card); }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary); }
         .summary-total {
             display: flex; justify-content: space-between; font-size: 20px; font-weight: 800;
@@ -280,133 +268,142 @@
             width: 100%; padding: 14px; border-radius: 12px; border: none;
             background: linear-gradient(135deg, var(--emerald), #059669);
             color: #fff; font-weight: 800; font-size: 15px; cursor: pointer;
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
         }
 
-        /* ==========================================================================
-           MODALES (CRUD CON VISTA PREVIA EN VIVO & CHECKOUT QR)
-           ========================================================================== */
+        /* MODALES */
         .modal-backdrop {
-            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75);
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78);
             backdrop-filter: blur(8px); z-index: 3000; display: none;
-            align-items: center; justify-content: center; padding: 18px; overflow-y: auto;
+            align-items: center; justify-content: center; padding: 16px; overflow-y: auto;
         }
         .modal-backdrop.open { display: flex; }
         .modal-window {
             background: var(--bg-surface); border: 1.5px solid var(--gold);
             border-radius: var(--radius-xl); width: 100%; max-width: 860px;
-            padding: 26px; box-shadow: 0 25px 60px rgba(0,0,0,0.65); max-height: 92vh; overflow-y: auto;
+            padding: 26px; box-shadow: 0 25px 60px rgba(0,0,0,0.65); max-height: 94vh; overflow-y: auto;
         }
         .modal-header {
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 20px;
         }
-        .modal-header h3 { margin: 0; font-family: 'Playfair Display', serif; font-size: 23px; color: var(--gold); }
+        .modal-header h3 { margin: 0; font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold); }
         .close-x { background: none; border: none; color: var(--text-secondary); font-size: 26px; cursor: pointer; }
 
         .crud-split { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: start; }
         @media (max-width: 780px) { .crud-split { grid-template-columns: 1fr; } }
 
         .form-group { margin-bottom: 14px; display: flex; flex-direction: column; }
-        .form-group label { font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; color: var(--text-secondary); }
-        .form-group input, .form-group select, .form-group textarea {
+        .form-group label { font-size: 11.5px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; color: var(--text-secondary); }
+        .form-group input, .form-group select {
             padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--border-color);
             background: var(--input-bg); color: var(--text-primary); font-size: 14px; outline: none;
         }
-        .form-group input:focus { border-color: var(--gold); }
-
         .file-upload-label {
-            border: 1.5px dashed var(--gold); border-radius: 10px; padding: 12px;
-            text-align: center; cursor: pointer; background: rgba(212, 175, 55, 0.06);
+            border: 1.5px dashed var(--gold); border-radius: 10px; padding: 11px;
+            text-align: center; cursor: pointer; background: rgba(212, 175, 55, 0.07);
             font-size: 13px; font-weight: 600; color: var(--gold-light);
         }
 
-        /* ==========================================================================
-           ESTILOS DEL MODAL CHECKOUT CON CÓDIGO QR
-           ========================================================================== */
+        /* TARJETA DE PAGO YAPE OFICIAL */
         .qr-checkout-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 24px; align-items: center; }
         @media (max-width: 760px) { .qr-checkout-grid { grid-template-columns: 1fr; } }
 
         .qr-display-card {
-            background: linear-gradient(145deg, #2d1238, #16091e);
-            border: 2px solid var(--gold); border-radius: 18px; padding: 20px;
-            text-align: center; color: #fff; box-shadow: 0 12px 30px rgba(116, 34, 132, 0.4);
+            background: linear-gradient(160deg, #742284 0%, #4a1259 100%);
+            border: 2px solid var(--gold); border-radius: 20px; padding: 20px;
+            text-align: center; color: #fff; box-shadow: 0 14px 34px rgba(116, 34, 132, 0.55);
         }
         .qr-frame {
-            background: #fff; padding: 12px; border-radius: 14px; display: inline-block;
-            margin: 12px auto; box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+            background: #ffffff; padding: 10px; border-radius: 16px; display: inline-block;
+            margin: 10px auto; box-shadow: 0 8px 24px rgba(0,0,0,0.35);
         }
-        .qr-frame img { width: 200px !important; height: 200px !important; object-fit: contain; display: block; }
+        .qr-frame img {
+            width: 230px !important; height: 260px !important;
+            object-fit: contain; display: block; border-radius: 10px;
+        }
         .qr-amount-pill {
-            background: var(--gold); color: #140c07; font-weight: 800; font-size: 20px;
-            padding: 6px 18px; border-radius: 30px; display: inline-block; margin-top: 6px;
+            background: var(--gold); color: #140c07; font-weight: 800; font-size: 21px;
+            padding: 6px 20px; border-radius: 30px; display: inline-block; margin-top: 6px;
         }
         .qr-actions { display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
         .btn-qr-tool {
-            background: rgba(255,255,255,0.14); color: #fff; border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.16); color: #fff; border: 1px solid rgba(255,255,255,0.35);
             padding: 8px 13px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;
         }
         .btn-qr-tool:hover { background: var(--gold); color: #140c07; }
 
-        /* ==========================================================================
-           TOAST NOTIFICATIONS
-           ========================================================================== */
-        .toast-container {
-            position: fixed; bottom: 24px; right: 24px; z-index: 5000;
-            display: flex; flex-direction: column; gap: 10px;
-        }
+        /* TOAST */
+        .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 5000; display: flex; flex-direction: column; gap: 10px; }
         .toast {
             background: var(--bg-surface); color: var(--text-primary);
-            border-left: 5px solid var(--gold); border-top: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);
+            border-left: 5px solid var(--gold); border: 1px solid var(--border-color);
             padding: 14px 20px; border-radius: 12px; font-weight: 700; font-size: 13.5px;
             box-shadow: 0 12px 28px rgba(0,0,0,0.45); display: flex; align-items: center; gap: 10px;
-            animation: slideIn 0.25s ease forwards;
         }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     </style>
 </head>
-<body>
+<body data-role="cliente">
 
-<!-- ================= NAVBAR GLASSMORPHISM ================= -->
+<!-- FRANJA DE PERSONAL AUTENTICADO (SOLO VISIBLE CUANDO INICIA SESIÓN EL MOZO / ADMIN) -->
+<div class="staff-bar staff-only">
+    <div>
+        🔐 <strong>Modo Personal Activo:</strong> <span id="staff-nombre-activo">Midward Quispe Mamani (Administrador)</span> — Tienes control total para agregar/editar productos, ver caja y configurar el QR.
+    </div>
+    <button onclick="cerrarSesionStaff()" style="background:#fff; color:#7f1d1d; border:none; padding:5px 14px; border-radius:20px; font-weight:800; font-size:12px; cursor:pointer;">
+        🚪 Cerrar Sesión y Volver a Vista Cliente
+    </button>
+</div>
+
+<!-- NAVBAR PRINCIPAL -->
 <header>
     <a href="index.php" class="brand">
         <img src="assets/img/logo.jpg" alt="Logo" class="brand-logo" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=200&q=80'">
         <div class="brand-title">
-            <h1>El Rincón del Sabor <span class="badge-v7">v7.0 PRO</span></h1>
-            <span>Alta Cocina Peruana &amp; Pagos QR Instantáneos</span>
+            <h1>El Rincón del Sabor</h1>
+            <span>Alta Cocina Peruana &amp; Pedidos Online</span>
         </div>
     </a>
 
+    <!-- Selector claro: Zona Cliente vs Acceso Mozo/Admin -->
+    <div class="role-switcher">
+        <button id="tab-cliente" class="role-tab active" onclick="activarVistaCliente()">
+            👤 Zona Cliente (Pedir)
+        </button>
+        <button id="tab-staff" class="role-tab" onclick="intentarAccesoStaff()">
+            🔐 Mozo / Administrador
+        </button>
+    </div>
+
     <div class="nav-actions">
-        <a href="index.php" class="nav-link active">🍽️ Catálogo</a>
-        <a href="pedidos.php" class="nav-link">🧾 Salón / Caja</a>
-        <a href="reportes.php" class="nav-link">📊 Reportes</a>
-        <button class="nav-link" onclick="abrirModalConfigQR()">⚙️ Configurar QR</button>
-        <button class="nav-link" onclick="toggleTheme()" id="btn-theme">☀️ Modo Claro</button>
+        <!-- Opciones exclusivas para Mozo / Administrador -->
+        <a href="pedidos.php" class="nav-link staff-only">🧾 Comandas Salón</a>
+        <a href="reportes.php" class="nav-link staff-only">📊 Caja y Reportes</a>
+        <button class="nav-link staff-only" onclick="abrirModalConfigQR()">⚙️ Subir/Cambiar QR</button>
+
+        <!-- Opciones disponibles para todos -->
+        <button class="nav-link" onclick="toggleTheme()" id="btn-theme">☀️ Claro</button>
         <button class="btn-cart-trigger" onclick="toggleCart(true)">
-            🛒 Carrito <span class="cart-counter" id="cart-badge">0</span>
+            🛒 Mi Pedido <span class="cart-counter" id="cart-badge">0</span>
         </button>
     </div>
 </header>
 
-<!-- ================= HERO BANNER ================= -->
+<!-- HERO BANNER -->
 <section class="hero">
-    <h2>Experiencia Gastronómica &amp; Pedido Digital</h2>
-    <p>Selecciona tus platos favoritos, personaliza tu orden y paga al instante escaneando nuestro código QR oficial de Yape, Plin o transferencia.</p>
+    <h2>Bienvenido a El Rincón del Sabor</h2>
+    <p>Elige tus platos peruanos favoritos en nuestra carta digital y realiza tu pago al instante escaneando nuestro código QR oficial de Yape.</p>
     <div class="hero-badges">
-        <span class="hero-pill">📱 Yape / Plin Oficial: 968 752 081</span>
-        <span class="hero-pill">⚡ Confirmación Inmediata con Código de Orden</span>
-        <span class="hero-pill">🖼️ Gestión CRUD con Previsualización en Vivo</span>
+        <span class="hero-pill">📱 Yape Oficial: Midward Quispe Mamani (968 752 081)</span>
+        <span class="hero-pill">🍽️ Atención en Salón y Pedidos Para Llevar</span>
     </div>
 </section>
 
-<!-- ================= CONTENIDO PRINCIPAL ================= -->
+<!-- CONTENIDO PRINCIPAL -->
 <div class="container">
     <div class="toolbar">
         <div class="search-box">
             <span class="search-icon">🔍</span>
-            <input type="text" id="buscador" placeholder="Buscar plato por nombre, ingrediente o código..." oninput="filtrarCatalogo()">
+            <input type="text" id="buscador" placeholder="Buscar plato por nombre o ingrediente..." oninput="filtrarCatalogo()">
         </div>
 
         <div class="category-tabs">
@@ -416,41 +413,162 @@
             <button class="cat-btn" onclick="seleccionarCategoria('Bebidas', this)">🍹 Bebidas</button>
         </div>
 
-        <button class="btn-primary-gradient" onclick="abrirModalProducto()">+ Nuevo Producto</button>
+        <!-- Botón exclusivo de Administrador/Mozo -->
+        <button class="btn-primary-gradient staff-only" onclick="abrirModalProducto()">+ Nuevo Producto</button>
     </div>
 
     <!-- Galería de Productos -->
     <div id="catalogo-grid" class="catalog-grid"></div>
 </div>
 
-<!-- ================= DRAWER LATERAL DEL CARRITO ================= -->
+<!-- DRAWER LATERAL DEL CARRITO -->
 <div id="drawer-overlay" class="drawer-overlay" onclick="toggleCart(false)"></div>
 <aside id="cart-drawer" class="cart-drawer">
     <div class="drawer-header">
-        <h3>🛒 Tu Orden Gourmet</h3>
+        <h3>🛒 Tu Pedido Actual</h3>
         <button class="close-x" onclick="toggleCart(false)">&times;</button>
     </div>
     <div class="drawer-body" id="cart-items-container"></div>
     <div class="drawer-footer">
         <div class="summary-row">
-            <span>Subtotal de productos</span>
+            <span>Subtotal</span>
             <span id="cart-subtotal">S/ 0.00</span>
-        </div>
-        <div class="summary-row">
-            <span>Servicio de empaque / salón</span>
-            <span>Gratis</span>
         </div>
         <div class="summary-total">
             <span>Total a Pagar:</span>
             <span id="cart-total">S/ 0.00</span>
         </div>
         <button class="btn-checkout-qr" onclick="abrirModalCheckoutQR()">
-            📱 Finalizar Compra / Pago Rápido con QR
+            📲 Pagar Ahora con QR Yape / Efectivo
         </button>
     </div>
 </aside>
 
-<!-- ================= MODAL 1: CRUD DE PRODUCTO CON PREVISUALIZACIÓN EN TIEMPO REAL ================= -->
+<!-- ================= MODAL LOGIN PARA MOZO / ADMINISTRADOR ================= -->
+<div id="modal-login" class="modal-backdrop">
+    <div class="modal-window" style="max-width: 420px;">
+        <div class="modal-header">
+            <h3>🔐 Acceso Personal Autorizado</h3>
+            <button class="close-x" onclick="cerrarModalLogin()">&times;</button>
+        </div>
+        <p style="font-size:13px; color:var(--text-secondary); margin-top:0;">
+            Ingresa tus credenciales de <strong>Administrador</strong> o <strong>Mozo</strong> para gestionar la carta, precios, stock y comandas.
+        </p>
+        <form id="form-login">
+            <div class="form-group">
+                <label>Rol / Usuario</label>
+                <select id="login-user">
+                    <option value="Midward Quispe Mamani (Administrador)">👑 Midward Quispe (Administrador)</option>
+                    <option value="Mozo de Salón (Atención)">🤵 Mozo de Salón</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Contraseña de Acceso (PIN)</label>
+                <input type="password" id="login-pass" placeholder="Ingresa 1234" required>
+                <small style="color:var(--gold); margin-top:4px;">💡 Clave de acceso: <strong>1234</strong></small>
+            </div>
+            <button type="submit" class="btn-add-cart" style="width:100%; padding:13px; font-size:14px;">
+                🔓 Ingresar al Panel de Gestión
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ================= MODAL CHECKOUT DE PAGO RÁPIDO CON TU QR DE YAPE OFICIAL ================= -->
+<div id="modal-checkout-qr" class="modal-backdrop">
+    <div class="modal-window" style="max-width: 840px;">
+        <div class="modal-header">
+            <h3>📲 Finalizar Compra — Pago Rápido con Código QR Oficial</h3>
+            <button class="close-x" onclick="cerrarModalCheckoutQR()">&times;</button>
+        </div>
+
+        <div id="checkout-form-view" class="qr-checkout-grid">
+            <!-- Tarjeta Izquierda: QR Real de Yape de Midward Quispe Mamani -->
+            <div class="qr-display-card">
+                <div style="font-size:12px; font-weight:800; letter-spacing:1.2px; color:#f9d976;">
+                    ESCANEA DIRECTO DESDE TU APP YAPE O PLIN
+                </div>
+                <div class="qr-frame">
+                    <img id="checkout-qr-img" src="assets/img/qr-yape.jpg" alt="QR Yape Midward Quispe Mamani" onerror="mostrarAvisoFaltaQR(this)">
+                </div>
+                <div style="font-size:13px;">Monto total a yapear:</div>
+                <div class="qr-amount-pill" id="qr-monto-total">S/ 0.00</div>
+                <div style="margin-top:10px; font-size:14px; font-weight:800;">
+                    Titular Yape: <span style="color:#f9d976;" id="qr-titular-texto">Midward Quispe Mamani</span><br>
+                    Celular Yape / WhatsApp: <span id="qr-numero-texto" style="color:#00f5d4;">968 752 081</span>
+                </div>
+                <div class="qr-actions">
+                    <button type="button" class="btn-qr-tool" onclick="copiarNumeroCuenta()">📋 Copiar Celular</button>
+                    <button type="button" class="btn-qr-tool" onclick="descargarImagenQR()">⬇️ Descargar QR</button>
+                </div>
+            </div>
+
+            <!-- Formulario Derecho: Datos del Cliente -->
+            <form id="form-confirmar-pago">
+                <div class="form-group">
+                    <label>Tu Nombre Completo *</label>
+                    <input type="text" id="chk-cliente" placeholder="Ej. Midward Quispe" required>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="form-group">
+                        <label>Ubicación / Servicio *</label>
+                        <select id="chk-mesa">
+                            <option value="Mesa 01 - Salón">Mesa 01 - Salón</option>
+                            <option value="Mesa 02 - Salón">Mesa 02 - Salón</option>
+                            <option value="Mesa 03 - Salón">Mesa 03 - Salón</option>
+                            <option value="Mesa 04 - VIP">Mesa 04 - VIP</option>
+                            <option value="Para Llevar / Recojo">Para Llevar / Recojo</option>
+                            <option value="Delivery a Domicilio">Delivery a Domicilio</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Método de Pago *</label>
+                        <select id="chk-metodo">
+                            <option value="Yape QR (Midward Quispe - 968752081)">📱 Yape QR (968 752 081)</option>
+                            <option value="Plin (968752081)">📱 Plin (968 752 081)</option>
+                            <option value="Efectivo al Mozo">💵 Efectivo al Mozo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>N° de Operación Yape o Adjuntar Captura *</label>
+                    <input type="text" id="chk-operacion" placeholder="Ej. Operación Yape #129485 (o sube tu captura)" required>
+                    <label class="file-upload-label" style="margin-top:8px;">
+                        📸 Subir Captura del Yapeo (Opcional)
+                        <input type="file" id="chk-captura" accept="image/*" style="display:none;" onchange="mostrarNombreCaptura(event)">
+                    </label>
+                    <small id="captura-nombre" style="color:var(--emerald); margin-top:4px; font-weight:700;"></small>
+                </div>
+
+                <button type="submit" class="btn-checkout-qr" style="margin-top:10px;">
+                    ✅ Confirmar Mi Pedido Ahora
+                </button>
+            </form>
+        </div>
+
+        <!-- Confirmación de Orden Exitosa -->
+        <div id="checkout-success-view" style="display:none; text-align:center; padding:24px 10px;">
+            <div style="font-size:54px;">🎉</div>
+            <h2 style="font-family:'Playfair Display', serif; color:var(--emerald); margin:8px 0;">¡Pago en Verificación / Pedido Exitoso!</h2>
+            <p style="color:var(--text-secondary); max-width:500px; margin:0 auto 16px;">
+                Tu orden fue enviada a cocina correctamente. Puedes enviar tu constancia por WhatsApp para atención prioritaria.
+            </p>
+            <div style="background:var(--bg-card); border:1.5px dashed var(--gold); padding:16px 24px; border-radius:14px; display:inline-block; margin-bottom:20px;">
+                <div style="font-size:12px; color:var(--text-secondary);">NÚMERO DE ORDEN</div>
+                <div id="orden-generada-codigo" style="font-size:28px; font-weight:800; color:var(--gold-light); letter-spacing:2px;">ORD-00001</div>
+            </div>
+            <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+                <button class="btn-add-cart" style="max-width:290px; padding:12px 20px;" onclick="enviarComprobanteWhatsApp()">
+                    📲 Enviar Constancia al WhatsApp 968 752 081
+                </button>
+                <button class="nav-link" onclick="cerrarModalCheckoutQR()">Volver a la Carta</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= MODAL CRUD DE PRODUCTO (SOLO MOZO / ADMIN) ================= -->
 <div id="modal-producto" class="modal-backdrop">
     <div class="modal-window">
         <div class="modal-header">
@@ -459,7 +577,6 @@
         </div>
 
         <div class="crud-split">
-            <!-- Formulario Izquierdo -->
             <form id="form-producto">
                 <input type="hidden" id="prod-id">
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
@@ -479,13 +596,13 @@
 
                 <div class="form-group">
                     <label>Nombre del Plato o Bebida *</label>
-                    <input type="text" id="prod-nombre" placeholder="Ej. Fetuccini a la Huancaína con Lomo" oninput="actualizarVistaPrevia()" required>
+                    <input type="text" id="prod-nombre" placeholder="Ej. Arroz con Pato Chiclayano" oninput="actualizarVistaPrevia()" required>
                 </div>
 
                 <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;">
                     <div class="form-group">
                         <label>Precio (S/.) *</label>
-                        <input type="number" id="prod-precio" step="0.10" min="0.50" placeholder="34.00" oninput="actualizarVistaPrevia()" required>
+                        <input type="number" id="prod-precio" step="0.10" min="0.50" placeholder="32.00" oninput="actualizarVistaPrevia()" required>
                     </div>
                     <div class="form-group">
                         <label>Stock *</label>
@@ -502,27 +619,26 @@
 
                 <div class="form-group">
                     <label>Descripción Gastronómica</label>
-                    <input type="text" id="prod-descripcion" placeholder="Ingredientes, guarnición y preparación..." oninput="actualizarVistaPrevia()">
+                    <input type="text" id="prod-descripcion" placeholder="Ingredientes y acompañamiento..." oninput="actualizarVistaPrevia()">
                 </div>
 
                 <div class="form-group">
-                    <label>Imagen del Producto (Subir Archivo Local o Pegar URL)</label>
+                    <label>Imagen del Producto (Archivo Local o URL)</label>
                     <label class="file-upload-label">
-                        📁 Seleccionar Foto desde tu PC (JPG, PNG, WEBP)
+                        📁 Seleccionar Foto desde tu PC
                         <input type="file" id="prod-file" accept="image/*" style="display:none;" onchange="procesarArchivoImagen(event)">
                     </label>
-                    <input type="text" id="prod-imagen-url" placeholder="...o pega aquí una URL de imagen (https://...)" style="margin-top:8px;" oninput="actualizarImagenDesdeURL()">
+                    <input type="text" id="prod-imagen-url" placeholder="...o pega una URL de imagen (https://...)" style="margin-top:8px;" oninput="actualizarImagenDesdeURL()">
                 </div>
 
-                <button type="submit" class="btn-add-cart" style="width:100%; padding:13px; font-size:14.5px; margin-top:6px;">
-                    💾 Guardar Producto en el Catálogo
+                <button type="submit" class="btn-add-cart" style="width:100%; padding:13px; font-size:14.5px;">
+                    💾 Guardar Producto en Base de Datos
                 </button>
             </form>
 
-            <!-- Vista Previa en Tiempo Real Derecha -->
             <div>
-                <div style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--gold); margin-bottom:10px; letter-spacing:1px;">
-                    👁️ Vista Previa en Tiempo Real
+                <div style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--gold); margin-bottom:10px;">
+                    👁️ Vista Previa en Vivo
                 </div>
                 <div class="product-card" style="pointer-events:none;">
                     <div class="card-img-wrap">
@@ -533,12 +649,12 @@
                     <div class="card-body">
                         <div>
                             <span class="card-code" id="prev-codigo">PLT-000</span>
-                            <h4 class="card-title" id="prev-nombre">Nombre del Producto</h4>
-                            <p class="card-desc" id="prev-desc">Descripción gourmet del plato...</p>
+                            <h4 class="card-title" id="prev-nombre">Nombre del Plato</h4>
+                            <p class="card-desc" id="prev-desc">Descripción del plato...</p>
                         </div>
                         <div class="card-footer">
                             <span class="stock-tag" id="prev-stock">🔥 30 disp.</span>
-                            <span class="btn-add-cart" style="max-width:130px;">+ Agregar</span>
+                            <span class="btn-add-cart" style="max-width:120px;">🛒 Pedir</span>
                         </div>
                     </div>
                 </div>
@@ -547,136 +663,133 @@
     </div>
 </div>
 
-<!-- ================= MODAL 2: CHECKOUT DE PAGO RÁPIDO CON CÓDIGO QR ================= -->
-<div id="modal-checkout-qr" class="modal-backdrop">
-    <div class="modal-window" style="max-width: 820px;">
-        <div class="modal-header">
-            <h3>📲 Finalizar Compra — Pago Rápido con Código QR</h3>
-            <button class="close-x" onclick="cerrarModalCheckoutQR()">&times;</button>
-        </div>
-
-        <div id="checkout-form-view" class="qr-checkout-grid">
-            <!-- Tarjeta QR Izquierda -->
-            <div class="qr-display-card">
-                <div style="font-size:12px; font-weight:800; letter-spacing:1.5px; color:var(--gold-light);">ESCANEA CON YAPE / PLIN / BANCA MÓVIL</div>
-                <div class="qr-frame">
-                    <img id="checkout-qr-img" src="" alt="Código QR Oficial">
-                </div>
-                <div>Monto exacto a transferir:</div>
-                <div class="qr-amount-pill" id="qr-monto-total">S/ 0.00</div>
-                <div style="margin-top:10px; font-size:13.5px; font-weight:700;">
-                    Titular: El Rincón del Sabor<br>
-                    Número Yape / Plin: <span id="qr-numero-texto" style="color:var(--gold-light);">968 752 081</span>
-                </div>
-                <div class="qr-actions">
-                    <button type="button" class="btn-qr-tool" onclick="copiarNumeroCuenta()">📋 Copiar Número</button>
-                    <button type="button" class="btn-qr-tool" onclick="descargarImagenQR()">⬇️ Descargar QR</button>
-                </div>
-            </div>
-
-            <!-- Formulario de Verificación Derecha -->
-            <form id="form-confirmar-pago">
-                <div class="form-group">
-                    <label>Nombre Completo del Cliente *</label>
-                    <input type="text" id="chk-cliente" placeholder="Ej. Roy Aldair Flores" required>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                    <div class="form-group">
-                        <label>Modalidad / Mesa *</label>
-                        <select id="chk-mesa">
-                            <option value="Mesa 01 - Salón">Mesa 01 - Salón</option>
-                            <option value="Mesa 02 - Salón">Mesa 02 - Salón</option>
-                            <option value="Mesa 03 - VIP">Mesa 03 - VIP</option>
-                            <option value="Para Llevar / Recojo">Para Llevar / Recojo</option>
-                            <option value="Delivery Express">Delivery Express</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Billetera / Método Usado *</label>
-                        <select id="chk-metodo">
-                            <option value="Yape QR (968752081)">📱 Yape QR (968 752 081)</option>
-                            <option value="Plin QR (968752081)">📱 Plin QR (968 752 081)</option>
-                            <option value="Transferencia CCI">🏦 Transferencia Bancaria</option>
-                            <option value="Efectivo contraentrega">💵 Efectivo en Caja</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>N° de Operación o Subir Captura de Comprobante *</label>
-                    <input type="text" id="chk-operacion" placeholder="Ej. Operación #0482910 (o adjunta captura abajo)" required>
-                    <label class="file-upload-label" style="margin-top:8px;">
-                        📸 Adjuntar Captura de Pago (Opcional)
-                        <input type="file" id="chk-captura" accept="image/*" style="display:none;" onchange="mostrarNombreCaptura(event)">
-                    </label>
-                    <small id="captura-nombre" style="color:var(--emerald); margin-top:4px; font-weight:700;"></small>
-                </div>
-
-                <button type="submit" class="btn-checkout-qr" style="margin-top:10px;">
-                    ✅ Confirmar Pago y Generar Orden
-                </button>
-            </form>
-        </div>
-
-        <!-- Vista de Confirmación Exitosa -->
-        <div id="checkout-success-view" style="display:none; text-align:center; padding:24px 10px;">
-            <div style="font-size:54px;">🎉</div>
-            <h2 style="font-family:'Playfair Display', serif; color:var(--emerald); margin:8px 0;">¡Pago en Verificación / Pedido Exitoso!</h2>
-            <p style="color:var(--text-secondary); max-width:500px; margin:0 auto 16px;">
-                Hemos registrado tu pedido y validado tu comprobante. Cocina ya está preparando tu orden.
-            </p>
-            <div style="background:var(--bg-card); border:1.5px dashed var(--gold); padding:16px 24px; border-radius:14px; display:inline-block; margin-bottom:20px;">
-                <div style="font-size:12px; color:var(--text-secondary);">CÓDIGO DE ORDEN GENERADO</div>
-                <div id="orden-generada-codigo" style="font-size:28px; font-weight:800; color:var(--gold-light); letter-spacing:2px;">ORD-00001</div>
-            </div>
-            <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-                <button class="btn-add-cart" style="max-width:260px; padding:12px 20px;" onclick="enviarComprobanteWhatsApp()">
-                    📲 Enviar Orden a WhatsApp (968 752 081)
-                </button>
-                <button class="nav-link" onclick="cerrarModalCheckoutQR()">Seguir Comprando</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ================= MODAL 3: CONFIGURAR IMAGEN DEL QR (ADMIN) ================= -->
+<!-- ================= MODAL CONFIGURAR IMAGEN QR YAPE (ADMIN) ================= -->
 <div id="modal-config-qr" class="modal-backdrop">
     <div class="modal-window" style="max-width: 480px;">
         <div class="modal-header">
-            <h3>⚙️ Configurar QR Oficial de Cobro</h3>
+            <h3>⚙️ Configurar QR Oficial de Yape</h3>
             <button class="close-x" onclick="cerrarModalConfigQR()">&times;</button>
         </div>
+        <p style="font-size:13px; color:var(--text-secondary); margin-top:0;">
+            Sube aquí la imagen de tu QR de Yape (<strong>Midward Quispe Mamani</strong>) para que quede guardada permanentemente y pueda escanearse desde cualquier celular.
+        </p>
         <div class="form-group">
-            <label>Número Yape / Plin / Cuenta</label>
+            <label>Titular del Yape / Plin</label>
+            <input type="text" id="cfg-titular" value="Midward Quispe Mamani">
+        </div>
+        <div class="form-group">
+            <label>Número Yape / WhatsApp</label>
             <input type="text" id="cfg-numero" value="968 752 081">
         </div>
         <div class="form-group">
-            <label>Subir Imagen de tu propio QR (Yape/Plin)</label>
+            <label>Seleccionar tu Imagen QR Oficial de Yape</label>
             <label class="file-upload-label">
-                📤 Seleccionar Imagen QR desde tu PC
+                📤 Cargar imagen QR de Yape (WhatsApp Image / JPG / PNG)
                 <input type="file" accept="image/*" style="display:none;" onchange="subirNuevoQRAdmin(event)">
             </label>
         </div>
-        <button class="btn-add-cart" style="width:100%; padding:12px;" onclick="guardarConfigQR()">💾 Guardar Configuración QR</button>
+        <button class="btn-add-cart" style="width:100%; padding:12px;" onclick="guardarConfigQR()">💾 Guardar QR Oficial</button>
     </div>
 </div>
 
-<!-- Contenedor de Notificaciones Toast -->
 <div class="toast-container" id="toast-container"></div>
 
 <script>
-/* ==========================================================================
-   ESTADO GLOBAL Y UTILIDADES
-   ========================================================================== */
 let catalogo = [];
 let categoriaActual = '';
 let carrito = JSON.parse(localStorage.getItem('rincon_carrito_v7') || '[]');
 let imagenTemporalProducto = '';
 let ultimaOrdenDatos = null;
-
-// Imagen elegante por defecto y mapeo inteligente por nombre
 const DEFAULT_FOOD_IMG = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=700&q=80';
 
+/* ==========================================================================
+   CONTROL DE ROLES: ZONA CLIENTE VS LOGIN MOZO / ADMINISTRADOR
+   ========================================================================== */
+function inicializarRol() {
+    const sesionStaff = sessionStorage.getItem('rincon_staff_user');
+    if (sesionStaff) {
+        aplicarEstadoStaff(sesionStaff);
+    } else {
+        activarVistaCliente();
+    }
+}
+
+function activarVistaCliente() {
+    document.body.setAttribute('data-role', 'cliente');
+    document.getElementById('tab-cliente').className = 'role-tab active';
+    document.getElementById('tab-staff').className = 'role-tab';
+}
+
+function intentarAccesoStaff() {
+    const sesionStaff = sessionStorage.getItem('rincon_staff_user');
+    if (sesionStaff) {
+        aplicarEstadoStaff(sesionStaff);
+    } else {
+        document.getElementById('login-pass').value = '';
+        document.getElementById('modal-login').classList.add('open');
+    }
+}
+
+function cerrarModalLogin() {
+    document.getElementById('modal-login').classList.remove('open');
+}
+
+document.getElementById('form-login').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const user = document.getElementById('login-user').value;
+    const pass = document.getElementById('login-pass').value.trim();
+
+    if (pass === '1234' || pass === 'admin') {
+        sessionStorage.setItem('rincon_staff_user', user);
+        cerrarModalLogin();
+        aplicarEstadoStaff(user);
+        mostrarToast(`Bienvenido, ${user}`, '🔓');
+    } else {
+        mostrarToast('Contraseña incorrecta (Usa: 1234)', '❌');
+    }
+});
+
+function aplicarEstadoStaff(nombreUsuario) {
+    document.body.setAttribute('data-role', 'staff');
+    document.getElementById('staff-nombre-activo').textContent = nombreUsuario;
+    document.getElementById('tab-cliente').className = 'role-tab';
+    document.getElementById('tab-staff').className = 'role-tab staff-active';
+}
+
+function cerrarSesionStaff() {
+    sessionStorage.removeItem('rincon_staff_user');
+    activarVistaCliente();
+    mostrarToast('Sesión cerrada. Estás en Zona Cliente', '👤');
+}
+
+/* ==========================================================================
+   NOTIFICACIONES Y TEMA
+   ========================================================================== */
+function mostrarToast(mensaje, icono = '✨') {
+    const cont = document.getElementById('toast-container');
+    const div = document.createElement('div');
+    div.className = 'toast';
+    div.innerHTML = `<span>${icono}</span> <span>${mensaje}</span>`;
+    cont.appendChild(div);
+    setTimeout(() => div.remove(), 3400);
+}
+
+function toggleTheme() {
+    const html = document.documentElement;
+    const nuevo = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', nuevo);
+    localStorage.setItem('rincon_theme', nuevo);
+    document.getElementById('btn-theme').textContent = nuevo === 'dark' ? '☀️ Claro' : '🌙 Oscuro';
+}
+(function() {
+    const t = localStorage.getItem('rincon_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+    document.getElementById('btn-theme').textContent = t === 'dark' ? '☀️ Claro' : '🌙 Oscuro';
+})();
+
+/* ==========================================================================
+   FOTOGRAFÍAS Y CATÁLOGO
+   ========================================================================== */
 function resolverImagenPlato(p) {
     if (p.imagen && p.imagen.trim() !== '') return p.imagen;
     const n = (p.nombre || '').toLowerCase();
@@ -694,35 +807,6 @@ function resolverImagenPlato(p) {
     return DEFAULT_FOOD_IMG;
 }
 
-function mostrarToast(mensaje, icono = '✨') {
-    const cont = document.getElementById('toast-container');
-    const div = document.createElement('div');
-    div.className = 'toast';
-    div.innerHTML = `<span>${icono}</span> <span>${mensaje}</span>`;
-    cont.appendChild(div);
-    setTimeout(() => div.remove(), 3400);
-}
-
-/* ==========================================================================
-   MODO OSCURO / CLARO
-   ========================================================================== */
-function toggleTheme() {
-    const html = document.documentElement;
-    const actual = html.getAttribute('data-theme');
-    const nuevo = actual === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', nuevo);
-    localStorage.setItem('rincon_theme', nuevo);
-    document.getElementById('btn-theme').textContent = nuevo === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Oscuro';
-}
-(function initTheme() {
-    const guardado = localStorage.getItem('rincon_theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', guardado);
-    document.getElementById('btn-theme').textContent = guardado === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Oscuro';
-})();
-
-/* ==========================================================================
-   CARGA Y RENDERIZADO DEL CATÁLOGO
-   ========================================================================== */
 async function cargarCatalogo() {
     const res = await fetch('controllers/carta.php');
     const json = await res.json();
@@ -755,7 +839,7 @@ function renderizarGrid(lista) {
     grid.innerHTML = '';
 
     if (lista.length === 0) {
-        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-secondary);">No se encontraron productos con ese criterio.</div>`;
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-secondary);">No se encontraron especialidades.</div>`;
         return;
     }
 
@@ -769,8 +853,9 @@ function renderizarGrid(lista) {
                 <div class="card-img-wrap">
                     <img src="${foto}" alt="${p.nombre}" onerror="this.src='${DEFAULT_FOOD_IMG}'">
                     <span class="card-cat-pill">${p.categoria}</span>
-                    <div class="card-admin-btns">
-                        <button class="icon-btn" title="Editar producto e imagen" onclick="abrirModalProducto(${p.idplato})">✏️</button>
+                    <!-- Botones de edición visibles ÚNICAMENTE para Mozo / Administrador -->
+                    <div class="card-admin-btns staff-only">
+                        <button class="icon-btn" title="Editar producto" onclick="abrirModalProducto(${p.idplato})">✏️</button>
                         <button class="icon-btn del" title="Eliminar producto" onclick="eliminarProducto(${p.idplato}, '${p.nombre.replace(/'/g, "\\'")}')">🗑️</button>
                     </div>
                     <span class="card-price-badge">S/ ${parseFloat(p.precio).toFixed(2)}</span>
@@ -779,12 +864,12 @@ function renderizarGrid(lista) {
                     <div>
                         <span class="card-code">${p.codigo}</span>
                         <h4 class="card-title">${p.nombre}</h4>
-                        <p class="card-desc">${p.descripcion || 'Especialidad gourmet preparada al instante.'}</p>
+                        <p class="card-desc">${p.descripcion || 'Especialidad preparada al momento.'}</p>
                     </div>
                     <div class="card-footer">
                         <span class="stock-tag ${lowStock}">${disponible ? `🔥 ${p.stock} disp.` : '⛔ Agotado'}</span>
                         <button class="btn-add-cart" ${!disponible ? 'disabled' : ''} onclick="agregarAlCarrito(${p.idplato})">
-                            🛒 Agregar
+                            🛒 Pedir Plato
                         </button>
                     </div>
                 </div>
@@ -794,7 +879,7 @@ function renderizarGrid(lista) {
 }
 
 /* ==========================================================================
-   CARRITO LATERAL DESLIZABLE (DRAWER)
+   CARRITO DE COMPRAS
    ========================================================================== */
 function toggleCart(abrir) {
     document.getElementById('drawer-overlay').classList.toggle('open', abrir);
@@ -808,7 +893,7 @@ function agregarAlCarrito(idplato) {
     const item = carrito.find(i => i.idplato == idplato);
     if (item) {
         if (item.cantidad + 1 > prod.stock) {
-            mostrarToast('Stock máximo alcanzado para este plato', '⚠️');
+            mostrarToast('Stock máximo disponible alcanzado', '⚠️');
             return;
         }
         item.cantidad++;
@@ -823,20 +908,15 @@ function agregarAlCarrito(idplato) {
         });
     }
     guardarYRenderizarCarrito();
-    mostrarToast(`${prod.nombre} agregado al carrito`, '🛒');
+    mostrarToast(`${prod.nombre} añadido a tu pedido`, '🛒');
 }
 
 function cambiarCantidad(idplato, delta) {
     const idx = carrito.findIndex(i => i.idplato == idplato);
     if (idx === -1) return;
     const nuevo = carrito[idx].cantidad + delta;
-    if (nuevo <= 0) {
-        carrito.splice(idx, 1);
-    } else if (nuevo <= carrito[idx].stockMax) {
-        carrito[idx].cantidad = nuevo;
-    } else {
-        mostrarToast('No hay más unidades en stock', '⚠️');
-    }
+    if (nuevo <= 0) carrito.splice(idx, 1);
+    else if (nuevo <= carrito[idx].stockMax) carrito[idx].cantidad = nuevo;
     guardarYRenderizarCarrito();
 }
 
@@ -848,11 +928,10 @@ function guardarYRenderizarCarrito() {
 function renderizarCarrito() {
     const cont = document.getElementById('cart-items-container');
     const badge = document.getElementById('cart-badge');
-    let total = 0;
-    let totalItems = 0;
+    let total = 0, totalItems = 0;
 
     if (carrito.length === 0) {
-        cont.innerHTML = `<div style="text-align:center; padding:50px 10px; color:var(--text-secondary);">Tu carrito está vacío.<br>Agrega especialidades desde la carta.</div>`;
+        cont.innerHTML = `<div style="text-align:center; padding:50px 10px; color:var(--text-secondary);">Aún no has seleccionado platos.</div>`;
         badge.textContent = '0';
         document.getElementById('cart-subtotal').textContent = 'S/ 0.00';
         document.getElementById('cart-total').textContent = 'S/ 0.00';
@@ -869,7 +948,7 @@ function renderizarCarrito() {
                 <img src="${item.imagen}" alt="${item.nombre}" onerror="this.src='${DEFAULT_FOOD_IMG}'">
                 <div class="cart-item-info">
                     <div class="cart-item-title">${item.nombre}</div>
-                    <div class="cart-item-price">S/ ${sub.toFixed(2)} (S/ ${item.precio.toFixed(2)} c/u)</div>
+                    <div class="cart-item-price">S/ ${sub.toFixed(2)}</div>
                 </div>
                 <div class="qty-controls">
                     <button class="qty-btn" onclick="cambiarCantidad(${item.idplato}, -1)">-</button>
@@ -886,146 +965,33 @@ function renderizarCarrito() {
 }
 
 /* ==========================================================================
-   GESTIÓN CRUD DE PRODUCTOS E IMÁGENES EN TIEMPO REAL
+   CHECKOUT CON EL QR OFICIAL DE YAPE DE MIDWARD QUISPE MAMANI
    ========================================================================== */
-function abrirModalProducto(idplato = null) {
-    const form = document.getElementById('form-producto');
-    form.reset();
-    document.getElementById('prod-id').value = '';
-    imagenTemporalProducto = '';
-
-    if (idplato) {
-        const p = catalogo.find(item => item.idplato == idplato);
-        if (!p) return;
-        document.getElementById('modal-prod-titulo').textContent = '✏️ Editar Producto e Imagen';
-        document.getElementById('prod-id').value = p.idplato;
-        document.getElementById('prod-categoria').value = p.idcategoria;
-        document.getElementById('prod-codigo').value = p.codigo;
-        document.getElementById('prod-nombre').value = p.nombre;
-        document.getElementById('prod-precio').value = p.precio;
-        document.getElementById('prod-stock').value = p.stock;
-        document.getElementById('prod-condicion').value = p.condicion;
-        document.getElementById('prod-descripcion').value = p.descripcion || '';
-        imagenTemporalProducto = resolverImagenPlato(p);
-        document.getElementById('prod-imagen-url').value = (p.imagen && !p.imagen.startsWith('data:')) ? p.imagen : '';
-    } else {
-        document.getElementById('modal-prod-titulo').textContent = '✨ Agregar Nuevo Producto';
-        document.getElementById('prod-codigo').value = 'PLT-0' + (catalogo.length + 1);
-    }
-
-    actualizarVistaPrevia();
-    document.getElementById('modal-producto').classList.add('open');
+function obtenerImagenQRYapeReal() {
+    const qrSubido = localStorage.getItem('rincon_qr_oficial_midward');
+    if (qrSubido) return qrSubido;
+    return 'assets/img/qr-yape.jpg';
 }
 
-function cerrarModalProducto() {
-    document.getElementById('modal-producto').classList.remove('open');
-}
-
-function procesarArchivoImagen(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-        imagenTemporalProducto = evt.target.result;
-        document.getElementById('prev-img').src = imagenTemporalProducto;
-        mostrarToast('Imagen cargada en vista previa', '🖼️');
-    };
-    reader.readAsDataURL(file);
-}
-
-function actualizarImagenDesdeURL() {
-    const url = document.getElementById('prod-imagen-url').value.trim();
-    if (url) {
-        imagenTemporalProducto = url;
-        document.getElementById('prev-img').src = url;
-    }
-}
-
-function actualizarVistaPrevia() {
-    const selCat = document.getElementById('prod-categoria');
-    const catNombre = selCat.options[selCat.selectedIndex].getAttribute('data-nombre');
-    const codigo = document.getElementById('prod-codigo').value || 'PLT-000';
-    const nombre = document.getElementById('prod-nombre').value || 'Nombre del Producto';
-    const precio = parseFloat(document.getElementById('prod-precio').value) || 0;
-    const stock = document.getElementById('prod-stock').value || 0;
-    const desc = document.getElementById('prod-descripcion').value || 'Descripción gourmet del plato...';
-
-    document.getElementById('prev-cat').textContent = catNombre;
-    document.getElementById('prev-codigo').textContent = codigo;
-    document.getElementById('prev-nombre').textContent = nombre;
-    document.getElementById('prev-precio').textContent = `S/ ${precio.toFixed(2)}`;
-    document.getElementById('prev-stock').textContent = `🔥 ${stock} disp.`;
-    document.getElementById('prev-desc').textContent = desc;
-
-    const imgPreview = imagenTemporalProducto || resolverImagenPlato({ nombre, categoria: catNombre });
-    document.getElementById('prev-img').src = imgPreview;
-}
-
-document.getElementById('form-producto').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const id = document.getElementById('prod-id').value;
-    const payload = {
-        idcategoria: document.getElementById('prod-categoria').value,
-        codigo: document.getElementById('prod-codigo').value.trim(),
-        nombre: document.getElementById('prod-nombre').value.trim(),
-        precio: parseFloat(document.getElementById('prod-precio').value),
-        stock: parseInt(document.getElementById('prod-stock').value),
-        descripcion: document.getElementById('prod-descripcion').value.trim(),
-        condicion: parseInt(document.getElementById('prod-condicion').value),
-        imagen: imagenTemporalProducto || null
-    };
-
-    const url = id ? `controllers/carta.php?id=${id}` : 'controllers/carta.php';
-    const metodo = id ? 'PUT' : 'POST';
-
-    const res = await fetch(url, {
-        method: metodo,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    });
-    const json = await res.json();
-    if (json.status === 'success') {
-        cerrarModalProducto();
-        mostrarToast(id ? 'Producto actualizado correctamente' : 'Nuevo producto publicado', '✅');
-        cargarCatalogo();
-    } else {
-        mostrarToast(json.message || 'Error al guardar', '❌');
-    }
-});
-
-async function eliminarProducto(id, nombre) {
-    if (!confirm(`¿Deseas eliminar "${nombre}" del catálogo?`)) return;
-    const res = await fetch(`controllers/carta.php?id=${id}`, { method: 'DELETE' });
-    const json = await res.json();
-    if (json.status === 'success') {
-        mostrarToast('Producto eliminado del catálogo', '🗑️');
-        cargarCatalogo();
-    }
-}
-
-/* ==========================================================================
-   CHECKOUT INTERACTIVO CON CÓDIGO QR Y CONFIGURACIÓN QR
-   ========================================================================== */
-function obtenerImagenQRActual(monto) {
-    const qrCustom = localStorage.getItem('rincon_qr_img_v7');
-    if (qrCustom) return qrCustom;
-    const num = localStorage.getItem('rincon_qr_num_v7') || '968 752 081';
-    const dataQR = encodeURIComponent(`EL RINCON DEL SABOR | YAPE/PLIN: ${num} | MONTO: S/ ${monto.toFixed(2)}`);
-    return `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=${dataQR}`;
+function mostrarAvisoFaltaQR(imgEl) {
+    // Si aún no copiaron qr-yape.jpg en assets/img, permite cargarlo con un clic
+    imgEl.alt = "Sube tu imagen QR de Yape desde el botón Configurar QR";
 }
 
 function abrirModalCheckoutQR() {
     if (carrito.length === 0) {
-        mostrarToast('Agrega productos al carrito primero', '⚠️');
+        mostrarToast('Selecciona al menos un plato primero', '⚠️');
         return;
     }
     toggleCart(false);
     const total = carrito.reduce((acc, i) => acc + (i.precio * i.cantidad), 0);
     const numGuardado = localStorage.getItem('rincon_qr_num_v7') || '968 752 081';
+    const titularGuardado = localStorage.getItem('rincon_qr_titular_v7') || 'Midward Quispe Mamani';
 
     document.getElementById('qr-monto-total').textContent = `S/ ${total.toFixed(2)}`;
     document.getElementById('qr-numero-texto').textContent = numGuardado;
-    document.getElementById('checkout-qr-img').src = obtenerImagenQRActual(total);
+    document.getElementById('qr-titular-texto').textContent = titularGuardado;
+    document.getElementById('checkout-qr-img').src = obtenerImagenQRYapeReal();
 
     document.getElementById('checkout-form-view').style.display = 'grid';
     document.getElementById('checkout-success-view').style.display = 'none';
@@ -1039,24 +1005,23 @@ function cerrarModalCheckoutQR() {
 function copiarNumeroCuenta() {
     const num = (localStorage.getItem('rincon_qr_num_v7') || '968752081').replace(/\s+/g, '');
     navigator.clipboard.writeText(num);
-    mostrarToast(`Número ${num} copiado al portapapeles`, '📋');
+    mostrarToast(`Celular Yape ${num} copiado`, '📋');
 }
 
 function descargarImagenQR() {
     const link = document.createElement('a');
     link.href = document.getElementById('checkout-qr-img').src;
-    link.download = 'QR-Pago-ElRinconDelSabor.png';
-    link.target = '_blank';
+    link.download = 'QR-Yape-Midward-Quispe.jpg';
     link.click();
-    mostrarToast('Descargando código QR de pago...', '⬇️');
+    mostrarToast('Descargando QR Oficial de Yape...', '⬇️');
 }
 
 function mostrarNombreCaptura(e) {
     const file = e.target.files[0];
     if (file) {
-        document.getElementById('captura-nombre').textContent = `✅ Comprobante adjunto: ${file.name}`;
+        document.getElementById('captura-nombre').textContent = `✅ Captura lista: ${file.name}`;
         if (!document.getElementById('chk-operacion').value) {
-            document.getElementById('chk-operacion').value = `Archivo: ${file.name}`;
+            document.getElementById('chk-operacion').value = `Captura Yape: ${file.name}`;
         }
     }
 }
@@ -1089,9 +1054,7 @@ document.getElementById('form-confirmar-pago').addEventListener('submit', async 
         carrito = [];
         guardarYRenderizarCarrito();
         cargarCatalogo();
-        mostrarToast('¡Pedido verificado y registrado con éxito!', '🎉');
-    } else {
-        mostrarToast(json.message || 'Error al procesar el pago', '❌');
+        mostrarToast('¡Pedido registrado con éxito!', '🎉');
     }
 });
 
@@ -1102,20 +1065,115 @@ function enviarComprobanteWhatsApp() {
         lista += `• ${i.cantidad}x ${i.nombre} (S/ ${(i.precio * i.cantidad).toFixed(2)})\n`;
     });
     const msg = encodeURIComponent(
-        `🍽️ *ORDEN CONFIRMADA ${ultimaOrdenDatos.orden} — EL RINCÓN DEL SABOR*\n` +
+        `🍽️ *PEDIDO ${ultimaOrdenDatos.orden} — EL RINCÓN DEL SABOR*\n` +
         `👤 *Cliente:* ${ultimaOrdenDatos.cliente}\n` +
-        `📍 *Modalidad:* ${ultimaOrdenDatos.mesa}\n` +
-        `💳 *Método Pago:* ${ultimaOrdenDatos.metodo_pago}\n` +
+        `📍 *Servicio:* ${ultimaOrdenDatos.mesa}\n` +
+        `💳 *Pago:* ${ultimaOrdenDatos.metodo_pago}\n` +
         `🧾 *Comprobante:* ${ultimaOrdenDatos.comprobante}\n\n` +
         `*DETALLE:*\n${lista}\n` +
-        `💰 *TOTAL PAGADO: S/ ${ultimaOrdenDatos.total.toFixed(2)}*`
+        `💰 *TOTAL: S/ ${ultimaOrdenDatos.total.toFixed(2)}*`
     );
     window.open(`https://wa.me/51968752081?text=${msg}`, '_blank');
 }
 
-/* Configuración Admin del QR */
+/* ==========================================================================
+   CRUD DE PRODUCTOS Y CONFIGURACIÓN DEL QR OFICIAL (MOZO / ADMIN)
+   ========================================================================== */
+function abrirModalProducto(idplato = null) {
+    const form = document.getElementById('form-producto');
+    form.reset();
+    document.getElementById('prod-id').value = '';
+    imagenTemporalProducto = '';
+
+    if (idplato) {
+        const p = catalogo.find(item => item.idplato == idplato);
+        if (!p) return;
+        document.getElementById('modal-prod-titulo').textContent = '✏️ Editar Producto';
+        document.getElementById('prod-id').value = p.idplato;
+        document.getElementById('prod-categoria').value = p.idcategoria;
+        document.getElementById('prod-codigo').value = p.codigo;
+        document.getElementById('prod-nombre').value = p.nombre;
+        document.getElementById('prod-precio').value = p.precio;
+        document.getElementById('prod-stock').value = p.stock;
+        document.getElementById('prod-condicion').value = p.condicion;
+        document.getElementById('prod-descripcion').value = p.descripcion || '';
+        imagenTemporalProducto = resolverImagenPlato(p);
+    } else {
+        document.getElementById('modal-prod-titulo').textContent = '✨ Agregar Nuevo Producto';
+        document.getElementById('prod-codigo').value = 'PLT-0' + (catalogo.length + 1);
+    }
+    actualizarVistaPrevia();
+    document.getElementById('modal-producto').classList.add('open');
+}
+function cerrarModalProducto() { document.getElementById('modal-producto').classList.remove('open'); }
+
+function procesarArchivoImagen(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = evt => {
+        imagenTemporalProducto = evt.target.result;
+        document.getElementById('prev-img').src = imagenTemporalProducto;
+    };
+    reader.readAsDataURL(file);
+}
+function actualizarImagenDesdeURL() {
+    const url = document.getElementById('prod-imagen-url').value.trim();
+    if (url) { imagenTemporalProducto = url; document.getElementById('prev-img').src = url; }
+}
+function actualizarVistaPrevia() {
+    const selCat = document.getElementById('prod-categoria');
+    const catNombre = selCat.options[selCat.selectedIndex].getAttribute('data-nombre');
+    const nombre = document.getElementById('prod-nombre').value || 'Nombre del Plato';
+    const precio = parseFloat(document.getElementById('prod-precio').value) || 0;
+    document.getElementById('prev-cat').textContent = catNombre;
+    document.getElementById('prev-codigo').textContent = document.getElementById('prod-codigo').value || 'PLT-000';
+    document.getElementById('prev-nombre').textContent = nombre;
+    document.getElementById('prev-precio').textContent = `S/ ${precio.toFixed(2)}`;
+    document.getElementById('prev-stock').textContent = `🔥 ${document.getElementById('prod-stock').value || 0} disp.`;
+    document.getElementById('prev-desc').textContent = document.getElementById('prod-descripcion').value || 'Descripción...';
+    document.getElementById('prev-img').src = imagenTemporalProducto || resolverImagenPlato({ nombre, categoria: catNombre });
+}
+
+document.getElementById('form-producto').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const id = document.getElementById('prod-id').value;
+    const payload = {
+        idcategoria: document.getElementById('prod-categoria').value,
+        codigo: document.getElementById('prod-codigo').value.trim(),
+        nombre: document.getElementById('prod-nombre').value.trim(),
+        precio: parseFloat(document.getElementById('prod-precio').value),
+        stock: parseInt(document.getElementById('prod-stock').value),
+        descripcion: document.getElementById('prod-descripcion').value.trim(),
+        condicion: parseInt(document.getElementById('prod-condicion').value),
+        imagen: imagenTemporalProducto || null
+    };
+    const res = await fetch(id ? `controllers/carta.php?id=${id}` : 'controllers/carta.php', {
+        method: id ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if (json.status === 'success') {
+        cerrarModalProducto();
+        mostrarToast('Catálogo actualizado', '✅');
+        cargarCatalogo();
+    }
+});
+
+async function eliminarProducto(id, nombre) {
+    if (!confirm(`¿Eliminar "${nombre}" del catálogo?`)) return;
+    const res = await fetch(`controllers/carta.php?id=${id}`, { method: 'DELETE' });
+    const json = await res.json();
+    if (json.status === 'success') {
+        mostrarToast('Producto eliminado', '🗑️');
+        cargarCatalogo();
+    }
+}
+
 let qrTempAdmin = '';
 function abrirModalConfigQR() {
+    document.getElementById('cfg-titular').value = localStorage.getItem('rincon_qr_titular_v7') || 'Midward Quispe Mamani';
     document.getElementById('cfg-numero').value = localStorage.getItem('rincon_qr_num_v7') || '968 752 081';
     document.getElementById('modal-config-qr').classList.add('open');
 }
@@ -1124,17 +1182,18 @@ function subirNuevoQRAdmin(e) {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = evt => { qrTempAdmin = evt.target.result; mostrarToast('Imagen QR lista para guardar', '📷'); };
+    reader.onload = evt => { qrTempAdmin = evt.target.result; mostrarToast('QR de Yape cargado y listo para guardar', '📷'); };
     reader.readAsDataURL(file);
 }
 function guardarConfigQR() {
-    const num = document.getElementById('cfg-numero').value.trim();
-    localStorage.setItem('rincon_qr_num_v7', num);
-    if (qrTempAdmin) localStorage.setItem('rincon_qr_img_v7', qrTempAdmin);
+    localStorage.setItem('rincon_qr_titular_v7', document.getElementById('cfg-titular').value.trim());
+    localStorage.setItem('rincon_qr_num_v7', document.getElementById('cfg-numero').value.trim());
+    if (qrTempAdmin) localStorage.setItem('rincon_qr_oficial_midward', qrTempAdmin);
     cerrarModalConfigQR();
-    mostrarToast('Configuración de QR actualizada', '✅');
+    mostrarToast('QR Oficial de Midward Quispe guardado', '✅');
 }
 
+inicializarRol();
 cargarCatalogo();
 </script>
 </body>
